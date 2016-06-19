@@ -4,9 +4,9 @@ Welcome to `pollsDK`.
 
 You download the package by running:
 
-`devtools::install_github(56north/pollsDK) #Install devtools first if needed`
+`devtools::install_github("56north/pollsDK") #Install devtools first if needed`
 
-After install you are ready to go. The package so far has three function:
+After install you are ready to go. The package so far has three functions:
 
 `gahner()` pulls polling data from Erik Gahners Github repository.
 
