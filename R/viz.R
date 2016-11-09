@@ -41,7 +41,7 @@ gahner_plot <- function(pollingfirms = NULL, parties = NULL){
                                               color = partyletter)) +
     ggplot2::geom_point(alpha = .2, show.legend = F) +
     ggplot2::labs(x = "", y = "") +
-    ggplot2::scale_color_manual(values = partycolors) +
+    ggplot2::scale_color_manual(values = pollsDK::partycolors) +
     ggplot2::theme_minimal()
 
   return(gg)
