@@ -15,7 +15,7 @@
 #' @export
 #'
 
-berlingskebarometer <- function(year = 2016){
+berlingskebarometer <- function(year = lubridate::year(Sys.Date())){
 
   url <- paste0("http://www.b.dk/upload/webred/bmsandbox/opinion_poll/",year,"/pollofpolls.xml")
 
@@ -34,8 +34,7 @@ berlingskebarometer <- function(year = 2016){
         support <- x$supports[[1]]
         uncertainty <- x$uncertainty[[1]]
 
-        data.frame(letter, percent, mandates, support, uncertainty,
-                   stringsAsFactors = F)
+        dplyr::data_frame(letter, percent, mandates, support, uncertainty)
       })
 
       poll_data <- do.call(rbind, poll_data)

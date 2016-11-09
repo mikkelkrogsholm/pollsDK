@@ -10,22 +10,86 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+library(pollsDK)
 ```
 
-Welcome to `pollsDK`. 
+# pollsDK
 
-You download the package by running:
+The goal of pollsDK is to make it easy to download and use danish polling data.
 
-`devtools::install_github("56north/pollsDK") #Install devtools first if needed`
+## Installation
 
-After install you are ready to go. The package so far has three functions:
+You can install pollsDK from github with:
 
-`gahner()` pulls polling data from Erik Gahners Github repository.
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("56north/pollsDK")
+```
 
-`berlingskebarometer()` pulls Berlingskes weighted average of polls.
+## Gahner
 
-`ritzauindex()` pulls Ritzaus weighted average of polls along with some individual polls.
+The package owes a lot to [Erik Gahner](https://github.com/erikgahner) whos github repo [polls](https://github.com/erikgahner/polls) make many of the functions in this package possible.
 
-It also has a short data file called `partycolors` containing the colors (as set by Berlingske) of the individual parties. 
+There are four gahner_ functions in this package:
 
-Give it a spin. And please contribute to the code. Know of more sources for polls? Add them. Want to create an uber-cool visualization? Do it!
+#### `gahner`
+```{r gahner, message=FALSE, warning=FALSE}
+## Collects poll data from Erik Gahners Github
+
+polls <- gahner()
+
+polls
+
+```
+
+#### `gahner_partyletters` and `gahner_pollingfirms`
+```{r gahner_helper, message=FALSE, warning=FALSE}
+## Tells you which parties and  which polling firms are in Gahners data
+
+gahner_partyletters()
+
+gahner_pollingfirms()
+```
+
+#### `gahner_plot`
+```{r gahner_plot, message=FALSE, warning=FALSE}
+## Visualizes poll data from Erik Gahners Github
+
+gahner_plot()
+```
+
+You can filter the `gahner_plot()` by telling it which parties or polling firms you want to include in the plot.
+
+```{r gahner_plot2, message=FALSE, warning=FALSE}
+## Visualizes poll data from Erik Gahners Github, but filter to only include "I" (Liberal Alliance).
+
+
+gahner_plot(parties = "I")
+```
+
+## Berlingske and Ritzau
+You can also pull the polls from Berlingske Barometer and Ritzau Index
+
+#### `berlingskebarometer`
+```{r berlingske, message=FALSE, warning=FALSE}
+# Get information from Berlingske Barometer
+
+berlingskebarometer()
+```
+
+```{r berlingske_2014, message=FALSE, warning=FALSE}
+# And even from previous years
+
+berlingskebarometer(2014)
+```
+
+#### `ritzauindex`
+Ritzau provides a list of data frame with the most recent polls from a select number of pollsters. Each one hase the pollsters number and Ritzaus own index.
+```{r}
+# Get Ritzau data
+
+ritzau <- ritzauindex()
+
+ritzau[[1]]
+```
+

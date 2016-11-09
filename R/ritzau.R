@@ -30,6 +30,8 @@ ritzauindex <- function(){
   test2 <- jsonlite::fromJSON(text2)
 
   polls <- test2$Polls$Percentage
+  polls <- lapply(polls, dplyr::as_data_frame)
+
   names(polls) <- test2$Polls$PollName
 
 

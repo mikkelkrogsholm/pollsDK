@@ -7,7 +7,7 @@
 \url{http://www.politiko.dk/barometeret}
 }
 \usage{
-berlingskebarometer(year = 2016)
+berlingskebarometer(year = lubridate::year(Sys.Date()))
 }
 \arguments{
 \item{year}{is the year you want data for}

@@ -9,7 +9,7 @@ License: MIT
 LazyData: TRUE
 Encoding: UTF-8
 RoxygenNote: 5.0.1
-Depends:
+Imports:
     xml2,
     lubridate,
     readr,

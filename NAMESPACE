@@ -2,4 +2,7 @@
 
 export(berlingskebarometer)
 export(gahner)
+export(gahner_partyletters)
+export(gahner_plot)
+export(gahner_pollingfirms)
 export(ritzauindex)
