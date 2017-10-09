@@ -13,6 +13,9 @@ knitr::opts_chunk$set(
 library(pollsDK)
 ```
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pollsDK)](http://cran.r-project.org/package=pollsDK)
+
+
 # pollsDK
 
 The goal of pollsDK is to make it easy to download and use danish polling data.
