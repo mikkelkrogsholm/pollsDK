@@ -22,6 +22,10 @@ get_berlingske <- function(year = lubridate::year(Sys.Date())){
   berlingske <- xml2::read_xml(url)
   berlingske <- xml2::xml_children(berlingske)
 
+  # Nullify global variable for CRAN
+  letter <- datetime_floor <- desc <- datetime <- NULL
+
+  # Loop to get polls
   pollofpolls <- pbapply::pblapply(berlingske, function(poll){
     tryCatch({
       poll <- xml2::as_list(poll)
@@ -96,6 +100,10 @@ get_polls <- function(year = lubridate::year(Sys.Date())){
   berlingske <- xml2::read_xml(url)
   berlingske <- xml2::xml_children(berlingske)
 
+  # Nullify global variable for CRAN
+  letter <- pollster <- datetime_floor <- desc <- datetime <- NULL
+
+  # Loop to get polls
   polls <- pbapply::pblapply(berlingske, function(poll){
     tryCatch({
       poll <- xml2::as_list(poll)
@@ -157,10 +165,8 @@ get_polls <- function(year = lubridate::year(Sys.Date())){
 #' @return A data frame of all poll data from Erik Gahners Github
 #'
 #' @examples
-#' \dontrun{
 #' library(pollsDK)
 #' g <- get_gahner()
-#' }
 #'
 #' @source \url{https://github.com/erikgahner}
 #' @export
@@ -184,10 +190,8 @@ get_gahner <- function(){
 #' @return A list of data frames each containing a different poll, but all containing the Ritzau Index.
 #'
 #' @examples
-#' \dontrun{
 #' library(pollsDK)
 #' r <- get_ritzau()
-#' }
 #'
 #' @source \url{https://www.ritzau.dk/Produkter og Services/Ritzau Index.aspx}
 #'
@@ -203,22 +207,16 @@ get_ritzau <- function(){
   text <- stringr::str_split(text, "(\\= \\{)|(\\};)")
   text <- unlist(text)
 
-  text1 <- stringr::str_trim(text[2])
-  text1 <- stringr::str_c("{", text1, "}")
+  poll_text <- stringr::str_trim(text[4])
+  poll_text <- stringr::str_c("{", poll_text, "}")
 
-  text2 <- stringr::str_trim(text[4])
-  text2 <- stringr::str_c("{", text2, "}")
+  polls_list <- jsonlite::fromJSON(poll_text)
 
-  test1 <- jsonlite::fromJSON(text1)
-  test2 <- jsonlite::fromJSON(text2)
+  polls <- polls_list$Polls$Percentage
+  polls <- lapply(polls, tibble::as.tibble)
+  names(polls) <- polls_list$Polls$PollName
 
-  polls <- test2$Polls$Percentage
-  polls <- lapply(polls, dplyr::as_data_frame)
-
-  names(polls) <- test2$Polls$PollName
-
-
-  message_text <- paste0("List with data frames of polls:\n", paste(test2$Polls$PollName, collapse = "\n"),
+  message_text <- paste0("List with data frames of polls:\n", paste(polls$Polls$PollName, collapse = "\n"),
                          "\nEach data frame include the Ritzau Index")
 
   message(message_text)

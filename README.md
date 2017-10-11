@@ -1,5 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/pollsDK)](http://cran.r-project.org/package=pollsDK)
+
 pollsDK
 =======
 
@@ -12,158 +14,142 @@ You can install pollsDK from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("56north/pollsDK")
+devtools::install_github("mikkelkrogsholm/pollsDK")
+```
+
+Load library
+------------
+
+``` r
+library(pollsDK); library(tidyverse)
 ```
 
 Gahner
 ------
 
-The package owes a lot to [Erik Gahner](https://github.com/erikgahner) whos github repo [polls](https://github.com/erikgahner/polls) make many of the functions in this package possible.
+The package owes a lot to [Erik Gahner](https://github.com/erikgahner) whos github repo [polls](https://github.com/erikgahner/polls) is a plethora of polling data.
 
-There are four gahner\_ functions in this package:
-
-#### `gahner`
+#### `get_gahner()`
 
 ``` r
 ## Collects poll data from Erik Gahners Github
 
-polls <- gahner()
+g <- get_gahner()
 
-polls
-#> # A tibble: 1,007 × 18
-#>       id pollingfirm  year month   day party_a party_b party_c party_d
-#>    <int>       <chr> <int> <int> <int>   <dbl>   <dbl>   <dbl>   <dbl>
-#> 1      1     Megafon  2010     1    20    25.4     4.5    11.2      NA
-#> 2      2      Gallup  2010     1    29    25.0     3.4    11.1      NA
-#> 3      3      Greens  2010     2     3    26.2     5.4     9.6      NA
-#> 4      4     Rambøll  2010     2    11    26.6     4.1     9.7      NA
-#> 5      5     Megafon  2010     2    25    25.8     4.4    11.4      NA
-#> 6      6      Gallup  2010     2    26    26.6     4.7    10.4      NA
-#> 7      7      Greens  2010     3     3    28.4     5.0    11.0      NA
-#> 8      8     Rambøll  2010     3     4    24.6     4.7    12.7      NA
-#> 9      9     Megafon  2010     3    24    25.8     5.1    11.2      NA
-#> 10    10      Gallup  2010     3    26    26.7     4.3    11.0      NA
-#> # ... with 997 more rows, and 9 more variables: party_f <dbl>,
-#> #   party_i <dbl>, party_k <dbl>, party_o <dbl>, party_v <dbl>,
-#> #   party_oe <dbl>, party_aa <dbl>, n <int>, source <chr>
+glimpse(g)
+#> Observations: 1,123
+#> Variables: 18
+#> $ id          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,...
+#> $ pollingfirm <chr> "Megafon", "Gallup", "Greens", "RambÃ¸ll", "Megafo...
+#> $ year        <int> 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 20...
+#> $ month       <int> 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,...
+#> $ day         <int> 20, 29, 3, 11, 25, 26, 3, 4, 24, 26, 30, 12, 14, 2...
+#> $ party_a     <dbl> 25.4, 25.0, 26.2, 26.6, 25.8, 26.6, 28.4, 24.6, 25...
+#> $ party_b     <dbl> 4.5, 3.4, 5.4, 4.1, 4.4, 4.7, 5.0, 4.7, 5.1, 4.3, ...
+#> $ party_c     <dbl> 11.2, 11.1, 9.6, 9.7, 11.4, 10.4, 11.0, 12.7, 11.2...
+#> $ party_d     <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+#> $ party_f     <dbl> 18.5, 19.1, 16.9, 18.3, 16.8, 16.4, 14.7, 16.9, 18...
+#> $ party_i     <dbl> 0.3, 0.7, 1.1, 0.5, 0.6, 0.4, 0.4, 0.2, 1.2, 0.8, ...
+#> $ party_k     <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+#> $ party_o     <dbl> 14.6, 14.2, 14.2, 13.7, 15.2, 13.7, 11.7, 12.6, 13...
+#> $ party_v     <dbl> 22.4, 23.7, 24.0, 23.7, 22.2, 24.9, 25.5, 24.6, 22...
+#> $ party_oe    <dbl> 2.6, 2.2, 2.1, 2.5, 3.1, 2.3, 2.7, 3.0, 2.5, 2.4, ...
+#> $ party_aa    <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+#> $ n           <int> 1089, 1450, 1050, 1050, 1000, 1450, 1050, NA, 1089...
+#> $ source      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
 ```
-
-#### `gahner_partyletters` and `gahner_pollingfirms`
-
-``` r
-## Tells you which parties and  which polling firms are in Gahners data
-
-gahner_partyletters()
-#>  [1] "A" "Å" "B" "C" "D" "F" "I" "K" "O" "Ø" "V"
-
-gahner_pollingfirms()
-#> [1] "Epinion"  "Gallup"   "Greens"   "Megafon"  "Norstat"  "Rambøll" 
-#> [7] "Voxmeter" "Wilke"    "YouGov"
-```
-
-#### `gahner_plot`
-
-``` r
-## Visualizes poll data from Erik Gahners Github
-
-gahner_plot()
-```
-
-![](README-gahner_plot-1.png)
-
-You can filter the `gahner_plot()` by telling it which parties or polling firms you want to include in the plot.
-
-``` r
-## Visualizes poll data from Erik Gahners Github, but filter to only include "I" (Liberal Alliance).
-
-
-gahner_plot(parties = "I")
-```
-
-![](README-gahner_plot2-1.png)
 
 Berlingske and Ritzau
 ---------------------
 
 You can also pull the polls from Berlingske Barometer and Ritzau Index
 
-#### `berlingskebarometer`
+#### `get_berlingske()`
 
 ``` r
-# Get information from Berlingske Barometer
+# Get the Berlingske Barometer
 
-berlingskebarometer()
-#> # A tibble: 894 × 6
-#>    letter percent mandates support uncertainty   datetime
-#>     <chr>   <dbl>    <dbl>   <dbl>       <dbl>     <dttm>
-#> 1       V    18.9       33       9         1.0 2016-11-06
-#> 2       A    27.3       48       2         1.2 2016-11-06
-#> 3       B     5.2        9       2         0.6 2016-11-06
-#> 4       C     3.0        5       1         0.5 2016-11-06
-#> 5       D     2.2        4       1         0.4 2016-11-06
-#> 6       F     4.4        8       2         0.5 2016-11-06
-#> 7       I     7.0       12       1         0.7 2016-11-06
-#> 8       K     0.7        0       1         0.2 2016-11-06
-#> 9       O    16.7       30       1         1.0 2016-11-06
-#> 10      Ø     8.6       15       2         0.7 2016-11-06
-#> # ... with 884 more rows
+b <- get_berlingske()
+
+glimpse(b)
+#> Observations: 748
+#> Variables: 6
+#> $ letter      <chr> "A", "Å", "B", "C", "D", "F", "I", "K", "O", "Ø", ...
+#> $ percent     <dbl> 26.9, 5.8, 5.7, 3.9, 2.5, 4.9, 6.4, 0.6, 16.8, 8.0...
+#> $ mandates    <dbl> 47, 10, 10, 7, 4, 9, 11, 0, 30, 14, 33, 48, 10, 9,...
+#> $ support     <dbl> 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 9, 2, 2, 2, 1, 1, 2,...
+#> $ uncertainty <dbl> 1.4, 0.7, 0.7, 0.6, 0.5, 0.7, 0.8, 0.2, 1.2, 0.8, ...
+#> $ datetime    <dttm> 2017-01-05, 2017-01-05, 2017-01-05, 2017-01-05, 2...
 ```
+
+#### `get_polls()`
+
+``` r
+# Get polls from Berlingske
+
+p <- get_polls()
+
+glimpse(p)
+#> Observations: 835
+#> Variables: 9
+#> $ letter      <chr> "A", "Å", "B", "C", "D", "F", "I", "K", "O", "Ø", ...
+#> $ percent     <dbl> 25.9, 5.0, 5.7, 3.6, 2.6, 5.4, 5.6, 0.6, 17.8, 7.4...
+#> $ mandates    <dbl> 46, 9, 10, 6, 5, 10, 10, 0, 31, 13, 35, 49, 11, 8,...
+#> $ support     <dbl> 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 9, 2, 2, 2, 1, 1, 2,...
+#> $ uncertainty <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+#> $ pollster    <chr> "Gallup", "Gallup", "Gallup", "Gallup", "Gallup", ...
+#> $ description <chr> "Gallup Politisk Indeks er baseret på 1.522 telefo...
+#> $ respondents <dbl> 1522, 1522, 1522, 1522, 1522, 1522, 1522, 1522, 15...
+#> $ datetime    <dttm> 2017-01-05, 2017-01-05, 2017-01-05, 2017-01-05, 2...
+```
+
+For both `get_polls()` and `get_berlingske()` it will pull polls from the current year. You can change that by supplying it with the year argument.
 
 ``` r
 # And even from previous years
 
-berlingskebarometer(2014)
-#> # A tibble: 756 × 6
-#>    letter percent mandates support uncertainty   datetime
-#>     <chr>   <dbl>    <dbl>   <dbl>       <dbl>     <dttm>
-#> 1       V    24.3       43       2         1.2 2014-12-27
-#> 2       O    19.5       34       2         1.1 2014-12-27
-#> 3       K     0.7        0       2         0.2 2014-12-27
-#> 4       I     5.6       10       2         0.7 2014-12-27
-#> 5       F     7.2       13       1         0.7 2014-12-27
-#> 6       C     4.2        7       2         0.6 2014-12-27
-#> 7       B     7.6       13       1         0.8 2014-12-27
-#> 8       Ø     9.5       17       1         0.8 2014-12-27
-#> 9       A    21.3       38       9         1.2 2014-12-27
-#> 10      V    24.5       43       2         1.3 2014-12-21
-#> # ... with 746 more rows
+p14 <- get_polls(2014)
+
+glimpse(p14)
+#> Observations: 1,017
+#> Variables: 9
+#> $ letter      <chr> "A", "A", "B", "B", "C", "C", "F", "F", "I", "I", ...
+#> $ percent     <dbl> 23.8, 21.8, 8.4, 8.4, 3.6, 4.2, 3.9, 4.2, 4.8, 4.0...
+#> $ mandates    <dbl> 42, 39, 15, 15, 6, 7, 7, 8, 8, 7, 0, 0, 29, 32, 20...
+#> $ support     <dbl> 9, 9, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2,...
+#> $ uncertainty <dbl> 2.1, 2.3, 1.4, 1.6, 0.9, 1.1, 1.0, 1.1, 1.1, 1.1, ...
+#> $ pollster    <chr> "Gallup", "Greens", "Gallup", "Greens", "Gallup", ...
+#> $ description <chr> "Gallup Politisk Indeks er baseret på 1.579 telefo...
+#> $ respondents <dbl> 1579, 1199, 1579, 1199, 1579, 1199, 1579, 1199, 15...
+#> $ datetime    <dttm> 2014-01-09, 2014-01-09, 2014-01-09, 2014-01-09, 2...
 ```
 
-#### `ritzauindex`
+#### `get_ritzau()`
 
 Ritzau provides a list of data frame with the most recent polls from a select number of pollsters. Each one hase the pollsters number and Ritzaus own index.
 
 ``` r
 # Get Ritzau data
 
-ritzau <- ritzauindex()
+r <- get_ritzau()
 #> List with data frames of polls:
-#> Voxmeter 06.11
-#> Greens 02.11
-#> Epinion 20.10
-#> Wilke 17.10
-#> Norstat 09.10
-#> Gallup 06.10
+#> 
 #> Each data frame include the Ritzau Index
 
-ritzau[[1]]
-#> # A tibble: 12 × 13
-#>    PartyId Party
-#> *    <int> <lgl>
-#> 1        1    NA
-#> 2        4    NA
-#> 3        2    NA
-#> 4        8    NA
-#> 5       11    NA
-#> 6       10    NA
-#> 7        9    NA
-#> 8        3    NA
-#> 9        7    NA
-#> 10       6    NA
-#> 11       5    NA
-#> 12      17    NA
-#> # ... with 11 more variables: PartyName <chr>, PartyLogo <chr>,
-#> #   PartyBlock <chr>, PartyColor <chr>, Percentage <dbl>, Mandate <dbl>,
-#> #   RitzauPartyColor <chr>, RitzauPercentage <dbl>, RitzauMandate <dbl>,
-#> #   ChartSortOrder <int>, IsOfficial <lgl>
+glimpse(r[[1]])
+#> Observations: 12
+#> Variables: 13
+#> $ PartyId          <int> 1, 4, 2, 8, 11, 10, 9, 3, 7, 6, 5, 17
+#> $ Party            <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
+#> $ PartyName        <chr> "A - Socialdemokraterne", "F - Socialistisk F...
+#> $ PartyLogo        <chr> "a.png", "f.png", "b.png", "o.png", "alt.png"...
+#> $ PartyBlock       <chr> "R", "R", "R", "R", "R", "O", "B", "B", "B", ...
+#> $ PartyColor       <chr> "#b1161c", "#df2027", "#d13076", "#71b75b", "...
+#> $ Percentage       <dbl> 26.3, 4.6, 6.2, 8.0, 5.2, 0.5, 17.5, 4.8, 18....
+#> $ Mandate          <dbl> 47, 8, 11, 14, 9, 0, 32, 9, 33, 12, 0, 0
+#> $ RitzauPartyColor <chr> "#e4d9d9", "#d5bfbf", "#d2bfc6", "#d1d8cf", "...
+#> $ RitzauPercentage <dbl> 26.23, 4.87, 5.68, 8.55, 5.18, 0.30, 18.70, 4...
+#> $ RitzauMandate    <dbl> 47, 9, 10, 15, 9, 0, 34, 7, 33, 11, 0, 0
+#> $ ChartSortOrder   <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 105
+#> $ IsOfficial       <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRU...
 ```

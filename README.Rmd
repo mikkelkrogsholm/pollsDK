@@ -10,7 +10,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
-library(pollsDK)
 ```
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pollsDK)](http://cran.r-project.org/package=pollsDK)
@@ -26,73 +25,63 @@ You can install pollsDK from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("56north/pollsDK")
+devtools::install_github("mikkelkrogsholm/pollsDK")
+```
+
+## Load library
+```{r message=FALSE, warning=FALSE}
+library(pollsDK); library(tidyverse)
 ```
 
 ## Gahner
+The package owes a lot to [Erik Gahner](https://github.com/erikgahner) whos github repo [polls](https://github.com/erikgahner/polls) is a plethora of polling data.
 
-The package owes a lot to [Erik Gahner](https://github.com/erikgahner) whos github repo [polls](https://github.com/erikgahner/polls) make many of the functions in this package possible.
-
-There are four gahner_ functions in this package:
-
-#### `gahner`
-```{r gahner, message=FALSE, warning=FALSE}
+#### `get_gahner()`
+```{r get_gahner, message=FALSE, warning=FALSE}
 ## Collects poll data from Erik Gahners Github
 
-polls <- gahner()
+g <- get_gahner()
 
-polls
-
-```
-
-#### `gahner_partyletters` and `gahner_pollingfirms`
-```{r gahner_helper, message=FALSE, warning=FALSE}
-## Tells you which parties and  which polling firms are in Gahners data
-
-gahner_partyletters()
-
-gahner_pollingfirms()
-```
-
-#### `gahner_plot`
-```{r gahner_plot, message=FALSE, warning=FALSE}
-## Visualizes poll data from Erik Gahners Github
-
-gahner_plot()
-```
-
-You can filter the `gahner_plot()` by telling it which parties or polling firms you want to include in the plot.
-
-```{r gahner_plot2, message=FALSE, warning=FALSE}
-## Visualizes poll data from Erik Gahners Github, but filter to only include "I" (Liberal Alliance).
-
-
-gahner_plot(parties = "I")
+glimpse(g)
 ```
 
 ## Berlingske and Ritzau
 You can also pull the polls from Berlingske Barometer and Ritzau Index
 
-#### `berlingskebarometer`
-```{r berlingske, message=FALSE, warning=FALSE}
-# Get information from Berlingske Barometer
+#### `get_berlingske()`
+```{r get_berlingske, message=FALSE, warning=FALSE}
+# Get the Berlingske Barometer
 
-berlingskebarometer()
+b <- get_berlingske()
+
+glimpse(b)
 ```
 
+#### `get_polls()`
+```{r get_polls, message=FALSE, warning=FALSE}
+# Get polls from Berlingske
+
+p <- get_polls()
+
+glimpse(p)
+```
+
+For both `get_polls()` and `get_berlingske()` it will pull polls from the current year. You can change that by supplying it with the year argument.
 ```{r berlingske_2014, message=FALSE, warning=FALSE}
 # And even from previous years
 
-berlingskebarometer(2014)
+p14 <- get_polls(2014)
+
+glimpse(p14)
 ```
 
-#### `ritzauindex`
+#### `get_ritzau()`
 Ritzau provides a list of data frame with the most recent polls from a select number of pollsters. Each one hase the pollsters number and Ritzaus own index.
-```{r}
+```{r get_ritzau}
 # Get Ritzau data
 
-ritzau <- ritzauindex()
+r <- get_ritzau()
 
-ritzau[[1]]
+glimpse(r[[1]])
 ```
 

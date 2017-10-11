@@ -16,9 +16,7 @@ A list of data frames each containing a different poll, but all containing the R
 Collects the most recent numbers from the Ritzau Index
 }
 \examples{
-\dontrun{
 library(pollsDK)
 r <- get_ritzau()
-}
 
 }

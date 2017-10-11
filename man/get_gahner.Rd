@@ -16,9 +16,7 @@ A data frame of all poll data from Erik Gahners Github
 Collects poll data from Erik Gahners Github
 }
 \examples{
-\dontrun{
 library(pollsDK)
 g <- get_gahner()
-}
 
 }
