@@ -9,6 +9,7 @@ Description: Pulls current and historic Danish polling data from various
    Erik Gahners Github Repository: <https://github.com/erikgahner/polls>.
    Berlingske Barometer: <https://www.b.dk/politiko/barometeret>.
    Ritzau Index: <https://www.ritzau.dk/index>.
+   DR Vælgervandring: <https://www.dr.dk/nyheder/politik/vaelgervandringer>.
 License: MIT + file LICENSE
 LazyData: TRUE
 Encoding: UTF-8
@@ -25,9 +26,12 @@ Imports:
     dplyr,
     pbapply,
     tibble,
-    tidyr
+    tidyr,
+    magrittr,
+    purrr
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 URL: https://github.com/mikkelkrogsholm/pollsDK
 BugReports: https://github.com/mikkelkrogsholm/pollsDK/issues
