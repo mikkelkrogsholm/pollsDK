@@ -6,10 +6,8 @@
 #' @return A data frame containing a year of Berlingske Barometer data
 #'
 #' @examples
-#' \dontrun{
 #' library(pollsDK)
 #' b <- get_berlingske()
-#' }
 #'
 #' @source \url{http://www.politiko.dk/barometeret}
 #' @export
@@ -223,4 +221,87 @@ get_ritzau <- function(){
 
   return(polls)
 
+}
+
+# get_voter_migration ----
+
+#' Collect voter migration from dr.dk
+#'
+#' @return a list
+#' @export
+#'
+#' @importFrom magrittr %>%
+#'
+#' @examples
+#' vote_mig <- get_voter_migration()
+#'
+get_voter_migration <- function(){
+
+  # Get the data ----
+  url <- "https://www.dr.dk/nyheder/politik/comp/meningsmaling/CandidateMovementGetJSON"
+
+  my_data <- jsonlite::fromJSON(url)
+
+  # Create helper functions ----
+  fix_letters <- function(string){
+    string %>%
+      stringr::str_replace_all("Ã¥", "å") %>%
+      stringr::str_replace_all("Ã¦", "æ") %>%
+      stringr::str_replace_all("Ã¸", "ø") %>%
+      stringr::str_replace_all("Ã·", "-") %>%
+      stringr::str_replace_all("Ã˜", "Ø") %>%
+      stringr::str_replace_all("Ã…", "Å")
+
+  }
+
+  # Extract metadata ----
+  info  <- purrr::map_chr(my_data$disclamers$txt, fix_letters)
+
+  date_pattern <- "(\\d{1,2}).(\\d{1,2}).(\\d{4})"
+  collected_date <- stringr::str_extract(info[1], date_pattern)
+  collected_date <- lubridate::dmy(collected_date)
+
+  interview_pattern <- "\\d*\\.*\\d+ interviews"
+  interviews <- stringr::str_extract(info[1], interview_pattern)
+  respondents <- stringr::str_replace_all(interviews, " interviews|\\.", "") %>% as.integer()
+
+  year_past <- my_data$nodesPastYear %>% as.integer()
+  year_present <- my_data$nodesPresentYear %>% as.integer()
+
+  metadata <- tibble::tibble(
+    collected_date,
+    year_past,
+    year_present,
+    respondents,
+    info = info %>% paste(collapse = "\n")
+  )
+
+  # Create data frame for nodes ----
+  nodes_past <- my_data$nodesPast
+  nodes_past$year <- year_past
+
+  nodes_present <- my_data$nodesPresent
+  nodes_present$year <- year_present
+
+  nodes <- dplyr::bind_rows(nodes_past, nodes_present)
+  names(nodes) <- names(nodes) %>% stringr::str_replace_all("^_", "")
+
+  nodes$short <- fix_letters(nodes$short)
+
+  nodes$sort <- nodes$shortName <- NULL
+
+  nodes <- nodes %>% tibble::as_tibble()
+
+  # Create data frame for edges ----
+  edges <- my_data$links %>% tibble::as_tibble()
+
+  # Return data ----
+
+  out <- list(
+    metadata = metadata,
+    nodes = nodes,
+    edges = edges
+  )
+
+  return(out)
 }
