@@ -19,9 +19,7 @@ A data frame containing a year of Berlingske Barometer data
 Collects poll data from Berlingske Barometer
 }
 \examples{
-\dontrun{
 library(pollsDK)
 b <- get_berlingske()
-}
 
 }
