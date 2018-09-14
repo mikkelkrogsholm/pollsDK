@@ -171,10 +171,7 @@ get_polls <- function(year = lubridate::year(Sys.Date())){
 #'
 
 get_gahner <- function(){
-  loc <- readr::locale(encoding = "Latin1")
-
-  polls <- readr::read_csv("https://raw.githubusercontent.com/erikgahner/polls/master/polls.csv",
-                           locale = loc)
+  polls <- readr::read_csv("https://raw.githubusercontent.com/erikgahner/polls/master/polls.csv")
 
   message("Polls collected by Erik Gahner\nTwitter: @erikgahner \nGithub: https://github.com/erikgahner")
 
